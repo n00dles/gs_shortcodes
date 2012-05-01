@@ -27,14 +27,7 @@ register_plugin(
 
 # activate hooks
 add_action('plugins-sidebar','createSideMenu',array($thisfile,'Shortcode Info')); 
-add_action('edit-content','addToolbar',array()); 
 
-
-function addToolbar(){
-	echo '<script type="text/javascript" src="../plugins/gs_shortcodes/js/jquery.simplemodal-1.4.1.js"></script>';
-	echo '<script type="text/javascript" src="../plugins/gs_shortcodes/js/editor.js"></script>';
-	echo '<link href="../plugins/gs_shortcodes/css/sc_toolbar.css" rel="stylesheet" type="text/css" media="all" />';
-}
 
 function shortcodes_show() {
   global $shortcode_tags;  
@@ -63,6 +56,7 @@ $table
 </table>
 HED;
 }
+
 
 /* @since 3.0
  * @uses $shortcode_tags,$shortcode_info
@@ -140,8 +134,15 @@ function do_shortcode($content) {
         if (empty($shortcode_tags) || !is_array($shortcode_tags))
                 return $content;
 
+        $tagnames = array_keys($shortcode_tags);
+        $tagregexp = join( '|', array_map('preg_quote', $tagnames) );
+        
+		$removeTagsPattern = '/(\s*)(<p>\s*)(\[('.$tagregexp.')\b(.*?)(?:(\/))?\])(?:(.+?)\[\/\2\])?(.?)(\s*<\/p>)/';
+		
+		$content2 = preg_replace($removeTagsPattern, '$3 ', $content) ;
+		
         $pattern = get_shortcode_regex();
-        return preg_replace_callback('/'.$pattern.'/s', 'do_shortcode_tag', htmlspecialchars_decode($content));
+        return preg_replace_callback('/'.$pattern.'/s', 'do_shortcode_tag', htmlspecialchars_decode($content2));
 }
 
 /**
@@ -169,6 +170,7 @@ function get_shortcode_regex() {
 
         // WARNING! Do not change this regex without changing do_shortcode_tag() and strip_shortcodes()
         return '(.?)\[('.$tagregexp.')\b(.*?)(?:(\/))?\](?:(.+?)\[\/\2\])?(.?)';
+//        return '(.?)\[('.$tagregexp.')\b(.*?)(?:(\/))?\](?:(.+?)\[\/\2\])?(.?)';
 }
 
 /**

@@ -17,10 +17,11 @@ function addH2($atts, $content = null){
     "id" => null
   ), $atts));
   $class    = isset($class) ? " class='".$class."'" : ''; 
-  $id       = isset($id) ? " id='".$id."'" : ''; 
+  $id       = isset($id) ? " id='".$id."'" : '';   
   return '<h2 '.$id.$class.'>'. do_shortcode($content).'</h2>'; 	
 }
 add_shortcode('h2','addH2', '[h2 class="" id=""]content[/h2]');
+
 
 function addH3($atts, $content = null){
   extract(shortcode_atts(array(
@@ -33,6 +34,7 @@ function addH3($atts, $content = null){
 }
 add_shortcode('h3','addH3', '[h3 class="" id=""]content[/h3]');
 
+
 function addH4($atts, $content = null){
   extract(shortcode_atts(array(
     "class" => null,
@@ -43,6 +45,7 @@ function addH4($atts, $content = null){
   return '<h4 '.$id.$class.'>'. do_shortcode($content).'</h4>'; 	
 }
 add_shortcode('h4','addH4', '[h4 class="" id=""]content[/h4]');
+
 
 function addH5($atts, $content = null){
   extract(shortcode_atts(array(
@@ -127,8 +130,6 @@ function addText($atts, $content = null){
   return '<div class="text-box '.$align.'" style="'.$size.$width.$height.$line_height.$color.'">'. do_shortcode($content).'</div>'; 	
 }
 add_shortcode('text','addText', '[text title=""]content[/text]');
-
-
 
 
 
@@ -230,10 +231,10 @@ function addQuote($atts, $content = null) {
 
 function addCode($atts, $content = null) {
  extract(shortcode_atts(array(
-    "class" => null
+    "mode" => null
   ), $atts));
-  $class    = isset($class) ? " class='".$class."'" : ''; 
-  return '<pre '.$class.'>'.$content.'</pre>'; 
+  $mode   = isset($mode) ? $mode : 'html'; 
+  return '<code data-language="'.$mode.'">'.str_replace('<br>', '', $content).'</code>'; 
 }
 
 
@@ -272,7 +273,7 @@ function addDownload($atts, $content = null) {
     extract(shortcode_atts(array(
         "url" =>'' 
     ), $atts));
-    return '<a class="download" href="'.$url.'">'.$content.'</a>';
+    return '<a class="button-2" href="'.$url.'">'.$content.'</a>';
 }
 
 
@@ -431,4 +432,3 @@ function addTooltip($atts, $content = null) {
 }
 
 add_shortcode('tooltip', 'addTooltip', '[tooltip class="classic|custom|critical|help|info|warning" text="" href="" ]content[/tooltip]');
-
