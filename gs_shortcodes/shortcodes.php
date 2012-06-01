@@ -291,7 +291,7 @@ function box($atts, $content = null) {
     return '<div class="box">'. do_shortcode($content).'</div>';
 }
 
-add_shortcode('box', 'box', '[box]content[/pre]');
+add_shortcode('box', 'box', '[box]content[/box]');
 
 function googlemap_shortcode( $atts ) {
     extract(shortcode_atts(array(
