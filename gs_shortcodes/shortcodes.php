@@ -245,7 +245,7 @@ function addYoutube($atts, $content = null) {
     "height" => null    
   ), $atts));
   $class    = isset($class) ? " class='".$class."'" : ''; 
-  return '<div><object type="application/x-shockwave-flash" data="http://www.youtube.com/v/'.$id.';hd=1" style="width:'.$width.'px;height:'.$height.'px"><param name="wmode" value="opaque"><param name="movie" value="http://www.youtube.com/v/'.$id.';hd=1" /></object></div> 
+  return '<div><object type="application/x-shockwave-flash" data="http://www.youtube.com/v/'.$id.'" style="width:'.$width.'px;height:'.$height.'px"><param name="wmode" value="opaque"><param name="movie" value="http://www.youtube.com/v/'.$id.'" /></object></div> 
   '; 
 }
 
@@ -291,7 +291,7 @@ function box($atts, $content = null) {
     return '<div class="box">'. do_shortcode($content).'</div>';
 }
 
-add_shortcode('box', 'box', '[box]content[/box]');
+add_shortcode('box', 'box', '[box]content[/pre]');
 
 function googlemap_shortcode( $atts ) {
     extract(shortcode_atts(array(

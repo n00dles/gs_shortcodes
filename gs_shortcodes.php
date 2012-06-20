@@ -15,18 +15,49 @@ $thisfile=basename(__FILE__, ".php");
 
 # register plugin
 register_plugin(
-	$thisfile, 													# ID of plugin, should be filename minus php
-	'Shortcodes',			 									# Title of plugin
-	'0.9b', 														# Version of plugin
-	'Mike Swan',												# Author of plugin
-	'http://www.digimute.com/', 								# Author URL
-	'Shortcodes for GS', 										# Plugin Description
-	'plugins', 													# Page type of plugin
-	'shortcodes_show'  												# Function that displays content
+	$thisfile, 				# ID of plugin, should be filename minus php
+	'Shortcodes',			 	# Title of plugin
+	'0.9c', 				# Version of plugin
+	'Mike Swan',				# Author of plugin
+	'http://www.digimute.com/', 		# Author URL
+	'Shortcodes for GS', 			# Plugin Description
+	'plugins', 				# Page type of plugin
+	'shortcodes_show'  			# Function that displays content
 );
 
 # activate hooks
 add_action('plugins-sidebar','createSideMenu',array($thisfile,'Shortcode Info')); 
+add_action('edit-extras','insertJS',array()); 
+
+
+function insertJS(){
+	global $shortcode_tags;  
+  	global $shortcode_info; 
+	echo "<script type=\"text/javascript\">";
+	echo "jQuery(document).ready(function() { ";
+	$js="<div style='width:100%;background-color:#efefef;height:36px;margin-bottom:5px;'>";
+	$js.="<h2 style='padding-top:5px;padding-left:5px;color:#222;'>[shortcodes]";
+	$js.= "<select style='width:300px;margin-left:30px;font-family:courier;font-size:11px;' id='shortcode_value'>";
+	while (list($key, $val) = each($shortcode_tags)) {
+		$js.= '<option >'.$key.' - '.str_replace("\"","'", $shortcode_info[$key]).'</option>';
+	}
+	$js.= "</select><input id='shorcode_insert' style='margin-left:15px;' type='button' value=' insert ' /></h2></div>";
+	
+	echo "$(\"".$js."\").insertAfter($('#metadata_window'));";
+	?>
+	
+	$("#shorcode_insert").on("click", function(){
+		var tag=$('#shortcode_value').val();
+		var tagIndex = tag.indexOf("[");
+		tag =  tag.substr(tagIndex);
+		CKEDITOR.instances["post-content"].insertText(tag);
+	})
+	
+	<?php 
+	echo " })";
+	echo "</script>";
+
+}
 
 
 function shortcodes_show() {
@@ -58,7 +89,7 @@ HED;
 }
 
 
-/* @since 3.0
+/* 
  * @uses $shortcode_tags,$shortcode_info
  *
  * @param string $tag Shortcode tag to be searched in post content.
@@ -67,28 +98,27 @@ HED;
  */
 function add_shortcode($tag, $func, $desc="Default Description") {
         global $shortcode_tags;
-		global $shortcode_info; 
+	global $shortcode_info; 
         if ( is_callable($func) )
                 $shortcode_tags[(string)$tag] = $func;
-				$shortcode_info[(string)$tag] = $desc;
+		$shortcode_info[(string)$tag] = $desc;
 }
 
-/* @since 3.0
+/* 
  * @uses $shortcode_tags,$shortcode_info
  *
  * @param string $tag Shortcode tag 
  * @desc Description of the shortcode
  */
 function add_shortcodeDesc($tag, $desc="") {
-		global $shortcode_info; 
-		$shortcode_info[(string)$tag] = $desc;
+	global $shortcode_info; 
+	$shortcode_info[(string)$tag] = $desc;
 }
 
 
 /**
  * Removes hook for shortcode.
  *
- * @since 2.5
  * @uses $shortcode_tags
  *
  * @param string $tag shortcode tag to remove hook for.
@@ -106,12 +136,10 @@ function remove_shortcode($tag) {
  * shortcodes global by a empty array. This is actually a very efficient method
  * for removing all shortcodes.
  *
- * @since 2.5
  * @uses $shortcode_tags
  */
 function remove_all_shortcodes() {
         global $shortcode_tags;
-
         $shortcode_tags = array();
 }
 
@@ -138,7 +166,7 @@ function do_shortcode($content) {
         $tagregexp = join( '|', array_map('preg_quote', $tagnames) );
         
 		$removeTagsPattern = '/(\s*)(<p>\s*)(\[('.$tagregexp.')\b(.*?)(?:(\/))?\])(?:(.+?)\[\/\2\])?(.?)(\s*<\/p>)/';
-		
+		echo $removeTagsPattern;
 		$content2 = preg_replace($removeTagsPattern, '$3 ', $content) ;
 		
         $pattern = get_shortcode_regex();
