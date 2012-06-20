@@ -47,9 +47,13 @@ function insertJS(){
 	?>
 	
 	$("#shorcode_insert").on("click", function(){
+		var selectText = CKEDITOR.instances["post-content"].getSelection().getSelectedText();
 		var tag=$('#shortcode_value').val();
 		var tagIndex = tag.indexOf("[");
 		tag =  tag.substr(tagIndex);
+		if (selectText!='') {
+			tag = tag.replace('content',selectText);
+		}
 		CKEDITOR.instances["post-content"].insertText(tag);
 	})
 	
