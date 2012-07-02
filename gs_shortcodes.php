@@ -86,7 +86,7 @@ function shortcodes_show() {
 	echo <<<HED
 <label>Registered ShortCodes</label>
 
-<p>The following shortcodes are registered with the system<</p>
+<p>The following shortcodes are registered with the system</p>
 <table  id="pluginTable">
 $table
 </table>
