@@ -27,8 +27,9 @@ register_plugin(
 
 # activate hooks
 add_action('plugins-sidebar','createSideMenu',array($thisfile,'Shortcode Info')); 
-add_action('edit-extras','insertJS',array()); 
-
+if (get_filename_id()=="edit"){
+	add_action('edit-extras','insertJS',array()); 
+}
 
 function insertJS(){
 	global $shortcode_tags;  
@@ -170,7 +171,7 @@ function do_shortcode($content) {
         $tagregexp = join( '|', array_map('preg_quote', $tagnames) );
         
 		$removeTagsPattern = '/(\s*)(<p>\s*)(\[('.$tagregexp.')\b(.*?)(?:(\/))?\])(?:(.+?)\[\/\2\])?(.?)(\s*<\/p>)/';
-		echo $removeTagsPattern;
+
 		$content2 = preg_replace($removeTagsPattern, '$3 ', $content) ;
 		
         $pattern = get_shortcode_regex();
