@@ -325,7 +325,10 @@ function output($data){
 
 include GSPLUGINPATH.'gs_shortcodes/shortcodes.php';
 
-
+if (file_exists(GSTHEMESPATH .$TEMPLATE.'/shortcodes.php')){
+	include GSTHEMESPATH.$TEMPLATE.'/shortcodes.php';
+	
+}
 
 add_filter('content','do_shortcode');
 ?>
