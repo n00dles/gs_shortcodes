@@ -17,7 +17,7 @@ $thisfile=basename(__FILE__, ".php");
 register_plugin(
 	$thisfile, 				# ID of plugin, should be filename minus php
 	'Shortcodes',			 	# Title of plugin
-	'0.9c', 				# Version of plugin
+	'1.0', 				# Version of plugin
 	'Mike Swan',				# Author of plugin
 	'http://www.digimute.com/', 		# Author URL
 	'Shortcodes for GS', 			# Plugin Description
@@ -318,7 +318,7 @@ function strip_shortcodes( $content ) {
 
 
 
-function output($data){
+function output_shortcode($data){
 	$ret=do_shortcode($data);
 	echo $ret;
 }
