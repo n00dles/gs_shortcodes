@@ -26,51 +26,6 @@ function addPageField($atts){
 }
 add_shortcode('pagefield','addPageField', '[pagefield page="" field="" /]');
 
-
-function googlemap_shortcode( $atts ) {
-    extract(shortcode_atts(array(
-        'width' => '500px',
-        'height' => '300px',
-        'marker' => '',
-        'center' => '',
-        'zoom' => '13'
-    ), $atts));
- 
-
-    $rand = rand(1,100) * rand(1,100);
- 
-    return '
-    	<div id="map_canvas" style="width: '.$width.'; height: '.$height.';"></div>
-    	<script type="text/javascript"> 
-		  function initialize() {
-		    var myLatlng = new google.maps.LatLng(  '.$marker.');
-		    var myOptions = {
-		      zoom: 15,
-		      center: myLatlng,
-		      mapTypeId: google.maps.MapTypeId.ROADMAP
-		    }
-		    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-		    var marker = new google.maps.Marker({
-		      position: myLatlng, 
-		      map: map
-		    });
-		  }
-		  
-		  function loadScript() {
-		    var script = document.createElement("script");
-		    script.type = "text/javascript";
-		    script.src = "http://maps.google.com/maps/api/js?sensor=false&callback=initialize";
-		    document.body.appendChild(script);
-		  }
-		  
-		  window.onload = loadScript;
-		</script>
-    ';
- 
-}
-add_shortcode('googlemap', 'googlemap_shortcode', '[googlemap width="" height="" marker="" center="" zoom="" /]');
-
-
 function vimeo_shortcode($atts, $content=null) {
 	extract(shortcode_atts(array(
 		'id' 	=> '',
