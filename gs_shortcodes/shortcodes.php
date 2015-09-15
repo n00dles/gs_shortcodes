@@ -109,18 +109,13 @@ function mapme($attr) {
 		'h' => '300',
 		'maptype' => 'ROADMAP',
 		'address' => '',
-		'kml' => '',
-		'kmlautofit' => 'yes',
 		'marker' => '',
 		'markerimage' => '',
-		'traffic' => 'no',
-		'bike' => 'no',
-		'fusion' => '',
-		'start' => '',
-		'end' => '',
 		'infowindow' => '',
 		'infowindowdefault' => 'yes',
 		'directions' => '',
+		'start' => '',
+		'end' =>'', 
 		'hidecontrols' => 'false',
 		'scale' => 'false',
 		'scrollwheel' => 'true'
@@ -132,8 +127,13 @@ function mapme($attr) {
     <div id="' .$attr['id'] . '" style="width:' . $attr['w'] . 'px;height:' . $attr['h'] . 'px;"></div>
 	';
 	
+	if ($numMaps==0){
+		$returnme .= '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>';
+		$numMaps++;
+	}
+
 	//directions panel
-	if($attr['start'] != '' && $attr['end'] != '') 
+	if($attr['start'] != '' && $attr['end'] != '' && $attr['directions']==true ) 
 	{
 		$panelwidth = $attr['w']-20;
 		$returnme .= '
@@ -141,10 +141,6 @@ function mapme($attr) {
 		';
 	}
 
-	if ($numMaps==0){
-		$returnme .= '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>';
-		$numMaps++;
-	}
 	$returnme .= '
     
 
@@ -163,28 +159,7 @@ function mapme($attr) {
 		var ' . $attr['id'] . ' = new google.maps.Map(document.getElementById("' . $attr['id'] . '"),
 		myOptions);
 		';
-				
-		//kml
-		if($attr['kml'] != '') 
-		{
-			if($attr['kmlautofit'] == 'no') 
-			{
-				$returnme .= '
-				var kmlLayerOptions = {preserveViewport:true};
-				';
-			}
-			else
-			{
-				$returnme .= '
-				var kmlLayerOptions = {preserveViewport:false};
-				';
-			}
-			$returnme .= '
-			var kmllayer = new google.maps.KmlLayer(\'' . html_entity_decode($attr['kml']) . '\',kmlLayerOptions);
-			kmllayer.setMap(' . $attr['id'] . ');
-			';
-		}
-
+		
 		//directions
 		if($attr['start'] != '' && $attr['end'] != '') 
 		{
@@ -211,35 +186,7 @@ function mapme($attr) {
 
 			';
 		}
-		
-		//traffic
-		if($attr['traffic'] == 'yes')
-		{ 
-			$returnme .= '
-			var trafficLayer = new google.maps.TrafficLayer();
-			trafficLayer.setMap(' . $attr['id'] . ');
-			';
-		}
-	
-		//bike
-		if($attr['bike'] == 'yes')
-		{
-			$returnme .= '			
-			var bikeLayer = new google.maps.BicyclingLayer();
-			bikeLayer.setMap(' . $attr['id'] . ');
-			';
-		}
-		
-		//fusion tables
-		if($attr['fusion'] != '')
-		{
-			$returnme .= '			
-			var fusionLayer = new google.maps.FusionTablesLayer(' . $attr['fusion'] . ');
-			fusionLayer.setMap(' . $attr['id'] . ');
-			';
-		}
 
-		
 		//address
 		if($attr['address'] != '')
 		{
