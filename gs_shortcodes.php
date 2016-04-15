@@ -75,7 +75,7 @@ function shortcodes_show() {
   	$table.=  '<tr>';
 	$table .= '<td>'.$key.'</td>';
 	$table .= '<td>'.$val.'</td>';
-	$table .= '<td><pre>'.$shortcode_info[$key].'</pre></td>';
+	$table .= '<td><pre style="white-space: normal;">'.$shortcode_info[$key].'</pre></td>';
 	$table .= '</tr>';
 	$counter++;
 	
